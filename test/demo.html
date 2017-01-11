@@ -1,0 +1,37 @@
+<!doctype html>
+<html>
+<head>
+    <title>electron-navigation-demo</title>
+    <style>
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+    </style>
+    <link rel="stylesheet" type="text/css" href="../themes/material-light.css">
+</head>
+
+<body>
+    <div id="nav-body-ctrls">
+        <!-- address -->
+    </div>
+    <div id="nav-body-tabs">
+        <!-- tabs -->
+    </div>
+    <div id="nav-body-views">
+        <!-- view -->
+    </div>
+    <script>
+        var eNavigation = require('../electron-navigation.js');
+    
+        var eNav = new eNavigation();
+        eNav.newTab('http://www.youtube.com/');
+    </script>
+</body>
+
+</html>

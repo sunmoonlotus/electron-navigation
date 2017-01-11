@@ -1,0 +1,37 @@
+{
+  "name": "electron-navigation",
+  "version": "1.0.0",
+  "description": "Auto adds a navigation user interface to electron that allows you to browse the internet with tabs and webviews.",
+  "main": "test/demo.js",
+  "scripts": {
+    "test": "electron ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/simply-coded/electron-navigation.git"
+  },
+  "keywords": [
+    "electron",
+    "navigation",
+    "html",
+    "tab",
+    "tabs",
+    "webview",
+    "auto",
+    "create",
+    "website",
+    "search",
+    "load",
+    "address",
+    "internet",
+    "view",
+    "display"
+  ],
+  "author": "Jeremy England",
+  "license": "MIT",
+  "dependencies": {
+    "color.js": "^0.1.2",
+    "electron": "^1.4.13",
+    "jquery": "^3.1.1"
+  }
+}
