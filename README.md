@@ -1,7 +1,7 @@
 # electron-navigation
 Adds a navigation interface to electron that allows you to browse the internet with tabs and webviews.
 
-> I just released this. I am currently working on updating the readme to fully show how to get everything working.
+**I just released this! I am currently working on updating the README.md to fully show how everything works.**
 
 ![](previews/light.PNG)
 ![](previews/dark.PNG)
