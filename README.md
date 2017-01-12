@@ -11,7 +11,7 @@ npm install electron-navigation
 
 ### Usage
 ```javascript
-var eNavigation = new require('electron-navigation');
+var eNavigation = require('electron-navigation');
 var eNav = new eNavigation();
 ```
 
