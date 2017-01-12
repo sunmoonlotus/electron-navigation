@@ -88,9 +88,9 @@ npm install electron-navigation
     npm install electron-navigation --save
     npm test
     ```
-	[](test/demo.PNG)
+	![](previews/demo.PNG)
 
-4. From here on out if you leave your command prompt window open to the demo directory, you can just type.
+4. From here on out if you leave your command prompt window open to the demo directory, you can run your app by typing.
 	```
     npm test
     ```
@@ -110,10 +110,10 @@ npm install electron-navigation
 
 </body>
 ```
-NOTE: 
-1. The **IDs** are important. Make sure they are spelled correctly. 
-2. If you don't want your users to control the pages you can get rid of the controls container. The ID for that is **nav-body-ctrls** .
-3. The order or location of these divs doesn't matter, and they also don't have to be div elements, one could be `<main id="nav-body-views">` for example.
+NOTE:   
+1. The **IDs** are important. Make sure they are spelled correctly.    
+2. If you don't want your users to control the pages you can get rid of the controls container. The ID for that is **nav-body-ctrls** .  
+3. The order or location of these divs doesn't matter, and they also don't have to be div elements, one could be `<main id="nav-body-views">` for example.  
 	
 > Now we need to apply the module to your code so that it can add the tabs and such to the containers we just created above. This is done in the same **~.html** file.	
 
