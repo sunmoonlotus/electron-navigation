@@ -44,7 +44,8 @@ npm install electron-navigation
 ### Options
 ---
 ####Display
->You can control how and if some elements are displayed by passing an options object through the main electron-navigation object like so:
+>You can control how and if some elements are displayed by passing an options object through the main electron-navigation object like so:  
+
 ```javascript
 var eNavigation = require('electron-navgation');
 
@@ -67,7 +68,8 @@ options = {
 }
 ```
 #### Control
->You can control the views and tabs using the object variable you created.
+>You can control the views and tabs using the object variable you created.  
+
 ```javascript
 var eNavigation = require('electron-navigation');
 
