@@ -88,7 +88,7 @@ eNav.newTab('this will perform a search');
 
 ### History
 * 1.0.3
-	* `ADD` - `README.md` updated with a tutorial on how to use the module.
+	* `CHANGE` - updated `README.md` with a tutorial on how to use the module.
 * 1.0.2
 	* `FIX` - *npm test* command for demo.
 * 1.0.1
