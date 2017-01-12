@@ -3,14 +3,20 @@ Adds a navigation interface to electron that allows you to browse the internet w
 
 **I just released this! I am currently working on updating the README.md to fully show how everything works.**
 
+---
+
 ![](previews/light.PNG)
 ![](previews/dark.PNG)
 
 ### Install
+---
+Add the `--save` switch if you want to save it to your *package.json* dependencies.
 ```
-npm install electron-navigation --save
+npm install electron-navigation
 ```
+
 ### Usage
+---
 1. This works with electron, so I'm assuming you have a basic electron app setup.
 2. If not checkout the demo files `demo.js` & `demo.html` on [github](https://github.com/simply-coded/electron-navigation/tree/master/test).
 3. Similar to **demo.html**, You should have a main html file **index.html** or whatever you called it.
@@ -35,8 +41,10 @@ npm install electron-navigation --save
 	```
 9. This should be all you need to get the basic functionality working. Confused? Check out the [demos](https://github.com/simply-coded/electron-navigation/tree/master/test) I mentioned earlier.
 
-#### Options
-You can control how and if some elements are displayed by passing an options object through the main electron-navigation object like so:
+### Options
+---
+####Display
+>You can control how and if some elements are displayed by passing an options object through the main electron-navigation object like so:
 ```javascript
 var eNavigation = require('electron-navgation');
 
@@ -58,7 +66,8 @@ options = {
     verticalTabs: false
 }
 ```
-You can also control the views and tabs using the object varaible you created.
+#### Control
+>You can control the views and tabs using the object variable you created.
 ```javascript
 var eNavigation = require('electron-navigation');
 
