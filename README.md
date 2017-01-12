@@ -89,6 +89,7 @@ npm install electron-navigation
     npm test
     ```
 	![](previews/demo.PNG)
+    * Node.js must be installed for this to work. Download [here](https://nodejs.org/en/download/) if you don't have it.
 
 4. From here on out if you leave your command prompt window open to the demo directory, you can run your app by typing.
 	```
@@ -97,53 +98,59 @@ npm install electron-navigation
     
 ### Usage
 ---
->In your main **~.html** file you need to create **3** containers where the the controls, tabs, and views will be auto placed into. The demo uses **index.html** as it's main file.
+1. In your main **~.html** file you need to create **3** containers where the the controls, tabs, and views will be auto placed into. The demo uses **index.html** as it's main file.
 
-    index.html
-```html
-<body>
-<!-- your code here -->
+    `index.html`
+    ```html
+    <body>
+    <!-- your code here -->
 
-<div id="nav-body-ctrls"></div>
-<div id="nav-body-tabs"></div>
-<div id="nav-body-views"></div>
+    <div id="nav-body-ctrls"></div>
+    <div id="nav-body-tabs"></div>
+    <div id="nav-body-views"></div>
 
-</body>
-```
-NOTE:   
-1. The **IDs** are important. Make sure they are spelled correctly.    
-2. If you don't want your users to control the pages you can get rid of the controls container. The ID for that is **nav-body-ctrls** .  
-3. The order or location of these divs doesn't matter, and they also don't have to be div elements, one could be `<main id="nav-body-views">` for example.  
+    </body>
+    ```
+    NOTE:   
+    * The **IDs** are important. Make sure they are spelled correctly.    
+    * If you don't want your users to control the pages you can get rid of the controls container. The ID for that is **nav-body-ctrls** .  
+    * The order or location of these divs doesn't matter, and they also don't have to be div elements one could be `<main id="nav-body-views">`.
 	
-> Now we need to apply the module to your code so that it can add the tabs and such to the containers we just created above. This is done in the same **~.html** file.	
+2. Now we need to apply the module by adding a script tag to the **~.html** file so that it can add the tabs and controls to the containers we just created above.	
 
-    index.html
-```html
-<!-- your code here -->
+    `index.html`
+    ```html
+    <!-- your code here -->
+	<div id="nav-body-ctrls"></div>
+    <div id="nav-body-tabs"></div>
+    <div id="nav-body-views"></div>
+    
+    <script>
+        var someNameHere = require('electron-navigation');
+        var anotherName = new someNameHere();
+    </script>
 
-<script>
-	var someNameHere = require('electron-navigation');
-	var anotherName = new someNameHere();
-</script>
-
-</body>
-```
+    </body>
+    ```
 
 > This should be all you need to get the basic functionality working. Confused? Check out the [demos](https://github.com/simply-coded/electron-navigation/tree/master/test) on github, also located in your project's node-modules folder.
 
 ### Options
 ---
->You can control how and if some elements are displayed by passing an options object through the main electron-navigation object like so:  
+You can control how and if some elements are displayed by passing an options object through the main electron-navigation object like so:  
 
-```javascript
-var eNavigation = require('electron-navgation');
+`index.html`
+```html
+<script>
+    var eNavigation = require('electron-navgation');
 
-// the order doesn't matter
-var eNav = new eNavigation({
-	showAddTabButton: false,
-	showUrlBar: true,
-    showReloadButton: false
-});
+    // the order doesn't matter
+    var eNav = new eNavigation({
+        showAddTabButton: false,
+        showUrlBar: true,
+        showReloadButton: false
+    });
+</script>
 ```
 ```javascript
 // these are all the options, and their default values if omitted.
@@ -158,35 +165,43 @@ options = {
 ```
 ### Methods
 ---
->You can control the views and tabs using the object variable you created.  
+You can control the views and tabs using the object variable you created.  
 
-```javascript
-var eNavigation = require('electron-navigation');
+`index.html`
+```html
+<script>
+	var eNavigation = require('electron-navigation');
 
-var eNav = new eNavigation({ showAddTabButton: false });
+	var eNav = new eNavigation({ showAddTabButton: false });
 
-// open a new tab with the specified url
-eNav.newTab('http://www.youtube.com/');
+    // open a new tab with the specified url
+    eNav.newTab('http://www.youtube.com/');
 
-// change the current tab's view. it will auto add the https:// protocol if omitted.
-eNav.changeTab('google.com');
+    // change the current tab's view. it will auto add the https:// protocol if omitted.
+    eNav.changeTab('google.com');
 
-// you can also perform google searches if no domain or protocol is specified.
-eNav.newTab('this will perform a search');
-
+    // you can also perform google searches if no domain or protocol is specified.
+    eNav.newTab('this will perform a search');
+</script>
 ```
 
 ### Themes
 ---
-> You can apply themes by downloading the ones on [github](https://github.com/simply-coded/electron-navigation/tree/master/themes) and putting them in your `<head>` tag.  
-> These can also be found in your app's node-modules directory `.\node-modules\electron-navigation\themes\` .
+You can apply themes by downloading the ones on [github](https://github.com/simply-coded/electron-navigation/tree/master/themes) and putting them in your `<head>` tag.  
 
+`index.html`
 ```html
-<link rel="stylesheet" type="text/css" href="relative/location/of/theme.css">
+<head>
+	<!-- your code here -->
+    
+	<link rel="stylesheet" type="text/css" href="relative/location/of/theme.css">
+</head>
 ```
+* Themes also located in `YourApp\node-modules\electron-navigation\themes\`.
 
-> The themes in the github folder linked above also has a template file called **theme-template.css** that you can use to style the tabs and controls exactly how you wish. 
+The themes folder also has a template theming file that you can use to style the tabs and controls exactly how you wish. 
 
+`theme-template.css`
 ```css
 /* back button, grouped in: .nav-icons */
 
@@ -200,6 +215,14 @@ eNav.newTab('this will perform a search');
 #nav-ctrls-back.disabled {
     /* pointer-events:none;	opacity:0.5; */
 }
+```
+
+### Requests | Issues | Clone
+---
+> Looking to add functionality to this app, report a bug, or just have a question? Submit a [request](https://github.com/simply-coded/electron-navigation/issues), or clone the app and do it yourself.
+
+```
+git clone https://github.com/simply-coded/electron-navigation.git
 ```
 
 ### History
