@@ -86,6 +86,32 @@ eNav.newTab('this will perform a search');
 
 ```
 
+### Themes
+---
+> You can apply themes by downloading the ones on [github](https://github.com/simply-coded/electron-navigation/tree/master/themes) and putting them in your `<head>` tag.  
+> These can also be found in your apps node-modules directory `.\node-modules\electron-navigation\themes\` .
+
+```html
+<link rel="stylesheet" type="text/css" href="relative/location/of/theme.css">
+```
+
+> The themes in the github folder linked above also has a template file called **theme-template.css** that you can use to style the tabs and controls exactly how you wish. 
+
+```css
+/* back button, grouped in: .nav-icons */
+
+#nav-ctrls-back {
+    /* fill:#000; width:24px; height:24px; */
+}
+
+
+/* back button with no history, grouped in: .nav-icons.disabled */
+
+#nav-ctrls-back.disabled {
+    /* pointer-events:none;	opacity:0.5; */
+}
+```
+
 ### History
 * 1.0.3
 	* `CHANGE` - updated `README.md` with a tutorial on how to use the module.
