@@ -3,21 +3,21 @@ const {
     BrowserWindow
 } = require('electron');
 
-let win;
+let demoLight;
+let demoDark;
 
 app.on('ready', () => {
 
-    win = new BrowserWindow({
-        width: 800,
-        height: 600
-    });
+    demoLight = new BrowserWindow();
+    demoLight.setTitle('horizontal demo');
+    demoLight.setMenu(null);
+    demoLight.loadURL('file://' + __dirname + '/demo-light.html');
+    demoLight.on('close', () => {demoLight = null;});
 
-    win.setMenu(null);
-
-    win.loadURL('file://' + __dirname + '/demo.html');
-
-    win.on('closed', () => {
-        win = null;
-    });
+    demoDark = new BrowserWindow();
+    demoDark.setTitle('vertical demo');
+    demoDark.setMenu(null);
+    demoDark.loadURL('file://' + __dirname + '/demo-dark.html');
+    demoDark.on('close', () => {demoDark = null;});
 
 });

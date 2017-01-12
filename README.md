@@ -225,6 +225,8 @@ git clone https://github.com/simply-coded/electron-navigation.git
 
 ### History
 ---
+* 1.0.5
+    * `ADD` - vertical demo as displayed in the previews.
 * 1.0.4
 	* `CHANGE` - updated demo files for developers, and added more to the **README.md**.
 * 1.0.3
