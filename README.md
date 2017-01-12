@@ -217,7 +217,7 @@ The themes folder also has a template theming file that you can use to style the
 
 ### Requests | Issues | Clone
 ---
-> Looking to add functionality to this app, report a bug, or just have a question? Submit a [request](https://github.com/simply-coded/electron-navigation/issues), or clone the app and do it yourself.
+> Looking to add functionality to this project, report a bug, or just have a question? Submit a [request](https://github.com/simply-coded/electron-navigation/issues), or clone the app and do it yourself.
 
 ```
 git clone https://github.com/simply-coded/electron-navigation.git
