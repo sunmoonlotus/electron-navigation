@@ -143,7 +143,7 @@ You can control how and if some elements are displayed by passing an options obj
     var eNavigation = require('electron-navgation');
 
     // the order doesn't matter
-    var eNav = new eNavigation({
+    var nav = new eNavigation({
         showAddTabButton: false,
         showUrlBar: true,
         showReloadButton: false
@@ -170,16 +170,16 @@ You can control the views and tabs using the object variable you created.
 <script>
 	var eNavigation = require('electron-navigation');
 
-	var eNav = new eNavigation({ showAddTabButton: false });
+	var nav = new eNavigation({ showAddTabButton: false });
 
     // open a new tab with the specified url
-    eNav.newTab('http://www.youtube.com/');
+    nav.newTab('http://www.youtube.com/');
 
     // change the current tab's view. it will auto add the https:// protocol if omitted.
-    eNav.changeTab('google.com');
+    nav.changeTab('google.com');
 
     // you can also perform google searches if no domain or protocol is specified.
-    eNav.newTab('this will perform a search');
+    nav.newTab('this will perform a search');
 </script>
 ```
 
