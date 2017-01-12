@@ -225,8 +225,10 @@ git clone https://github.com/simply-coded/electron-navigation.git
 
 ### History
 ---
+* 1.0.4
+	* `CHANGE` - updated demo files for developers, and added more to the **README.md**.
 * 1.0.3
-	* `CHANGE` - updated `README.md` with a tutorial on how to use the module.
+	* `CHANGE` - updated **README.md** with a tutorial on how to use the module.
 * 1.0.2
 	* `FIX` - *npm test* command for demo.
 * 1.0.1
