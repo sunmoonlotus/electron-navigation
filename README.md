@@ -256,7 +256,7 @@ git clone https://github.com/simply-coded/electron-navigation.git
 ---
 * 1.1.0
     * `FIX` - url bar will know not update while you are trying to type something new.
-    * `ADD` - methods *back()*, *forward()*, and *reload()*.
+    * `ADD` - methods *back()*, *forward()*, *reload()*, and *stop()*.
     * `ADD` - optional id parameter to the above methods for selecting which view to take action on.
     * `CHANGE` - optional id paramter to *changeTab()* for selecting which view to take action on.
     * `CHANGE` - optional id parameter to *newTab()* for setting apart tabs, and controlling it later. 
