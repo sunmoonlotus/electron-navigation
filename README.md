@@ -134,7 +134,7 @@ npm install electron-navigation
     ```
     npm test
     ```
-    ![](basic.PNG)
+    ![](previews/basic.PNG)
 
 > This should be all you need to get the basic functionality working. Confused? Check out the [demos](https://github.com/simply-coded/electron-navigation/tree/master/test) on github, also located in your project's node-modules folder.
 
