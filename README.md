@@ -96,7 +96,7 @@ npm install electron-navigation
     
 ### Usage
 ---
-1. In your main **~.html** file you need to create **3** containers where the the controls, tabs, and views will be auto placed into. The demo uses **index.html** as it's main file.
+1. In your main **~.html** file you need to create **3** containers where the controls, tabs, and views will be auto placed into. The demo uses **index.html** as it's main file.
 
     `index.html`
     ```html
@@ -130,6 +130,11 @@ npm install electron-navigation
 
     </body>
     ```
+3. Now that we have this, let's give it a quick run. If you've been following the setup guide, it would be like this.
+    ```
+    npm test
+    ```
+    ![](basic.PNG)
 
 > This should be all you need to get the basic functionality working. Confused? Check out the [demos](https://github.com/simply-coded/electron-navigation/tree/master/test) on github, also located in your project's node-modules folder.
 
