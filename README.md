@@ -130,7 +130,8 @@ npm install electron-navigation
 
     </body>
     ```
-3. Now that we have this, let's give it a quick run. If you've been following the setup guide, it would be like this.
+3. Now that we have this, let's give it a quick run. If you've been following the setup guide, it would be like this.  
+
     ```
     npm test
     ```
