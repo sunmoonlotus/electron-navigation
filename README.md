@@ -143,7 +143,7 @@ You can control how and if some elements are displayed by passing an options obj
     var eNavigation = require('electron-navgation');
 
     // the order doesn't matter
-    var eNav = new eNavigation({
+    var nav = new eNavigation({
         showAddTabButton: false,
         showUrlBar: true,
         showReloadButton: false
