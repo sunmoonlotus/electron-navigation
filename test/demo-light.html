@@ -28,7 +28,13 @@
     <script>
         /* development */
         var eNavigation = require('../index.js');
-        var nav = new eNavigation();
+        var nav = new eNavigation({ showAddTabButton: false });
+
+        nav.newTab('google.com', 'srch');
+    
+        setTimeout("nav.changeTab('cool wallpapers', 'srch')", 2000);
+    
+        setTimeout("nav.back('srch')", 5000);
 
         /* production
             var eNavigation = require('electron-navigation');

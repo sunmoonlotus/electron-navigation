@@ -158,30 +158,53 @@ options = {
     showReloadButton: true,
     showUrlBar: true,
     showAddTabButton: true,
+    closableTabs: true,
     verticalTabs: false
 }
 ```
+
 ### Methods
 ---
-You can control the views and tabs using the object variable you created.  
+>You can control the views and tabs using the object variable you created. 
+
+* newTab(url, id)
+	* url - *required*, specifies location of webview. Will auto add http protocol if domain is specified. Otherwise it will perform a google search.
+		* `http://github.com/`  = `http://github.com/`
+		* `youtube.com` = `http://www.youtube.com/`
+		* `hello there` = `https://www.google.com/search?q=hello+there`
+	* id - *optional*, creates an id to reference this tab later. Will console.log an error if the id is already taken or invalid.
+* changeTab(url, id) 
+	* url - *required*, specifies new location of webview. Has same auto features as newTab().
+	* id - *optional*, affects the webview with the id specified in newTab() created. If no id is given the active tab and view are affected. Will console.log an error if the id doesn't exist.
+* closeTab(id)
+	* id - *optional*, closes the tab and webview with the id specified in newTab(). If no id is given it will close the active tab and view.
+* back(id)
+	*  id - *optional*, goes back on the webview with the id specified in newTab(). If no id is given the active tab and view are affected.
+* forward(id)
+	*  id - *optional*, goes forward on the webview with the id specified in newTab(). If no id is given the active tab and view are affected.
+* reload(id)
+	*  id - *optional*, reloads the webview with the id specified in newTab(). If no id is given the active tab and view are affected.
+* stop(id)
+	*  id - *optional*, stops loading the webview with the id specified in newTab(). If no id is given the active tab and view are affected.
+
+Example : 
 
 `index.html`
 ```html
 <script>
 	var eNavigation = require('electron-navigation');
 
-	var eNav = new eNavigation({ showAddTabButton: false });
-
-    // open a new tab with the specified url
-    eNav.newTab('http://www.youtube.com/');
-
-    // change the current tab's view. it will auto add the https:// protocol if omitted.
-    eNav.changeTab('google.com');
-
-    // you can also perform google searches if no domain or protocol is specified.
-    eNav.newTab('this will perform a search');
+	var nav = new eNavigation({ showAddTabButton: false });
+	
+    nav.newTab('google.com', 'srch');
+    
+    setTimeout("nav.changeTab('cool wallpapers', 'srch')", 2000);
+    
+    setTimeout("nav.back('srch')", 5000);
+    
 </script>
 ```
+NOTE: setTimeout is just used to show the effect.
 
 ### Themes
 ---
@@ -225,6 +248,14 @@ git clone https://github.com/simply-coded/electron-navigation.git
 
 ### History
 ---
+* 1.1.0
+    * `FIX` - url bar will know not update while you are trying to type something new.
+    * `ADD` - methods *back()*, *forward()*, and *reload()*.
+    * `ADD` - optional id parameter to the above methods for selecting which view to take action on.
+    * `CHANGE` - optional id paramter to *changeTab()* for selecting which view to take action on.
+    * `CHANGE` - optional id parameter to *newTab()* for setting apart tabs, and controlling it later. 
+    * `ADD` - option to remove the close button on tabs called *closableTabs*.
+    * `ADD` - method *closeTab()* with optional id parameter for selecting which tab to take action on.
 * 1.0.5
     * `ADD` - vertical demo as displayed in the previews.
 * 1.0.4

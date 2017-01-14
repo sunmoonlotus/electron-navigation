@@ -35,7 +35,8 @@ function Navigation(options) {
         showReloadButton: true,
         showUrlBar: true,
         showAddTabButton: true,
-        verticalTabs: false
+        closableTabs: true,
+        verticalTabs: false        
     };
     if (options === 'undefined' || options === 'null' || options !== Object(options)) {
         options = {};
@@ -50,6 +51,7 @@ function Navigation(options) {
      */
     const NAV = this;
     this.SESSION_ID = 1;
+    this.TABS_CLOSEABLE = options.closableTabs;
 
     this.SVG_BACK = '<svg height="100%" viewBox="0 0 24 24"><path d="M0 0h24v24H0z" fill="none"/><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>';
     this.SVG_FORWARD = '<svg height="100%" viewBox="0 0 24 24"><path d="M0 0h24v24H0z" fill="none"/><path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/></svg>';
@@ -128,22 +130,22 @@ function Navigation(options) {
     // go back
     //
     $('#nav-body-ctrls').on('click', '#nav-ctrls-back', function () {
-        $('.nav-views-view.active')[0].goBack();
+        NAV.back();
     });
     //
     // go forward
     //
     $('#nav-body-ctrls').on('click', '#nav-ctrls-forward', function () {
-        $('.nav-views-view.active')[0].goForward();
+        NAV.forward();
     });
     //
     // reload page
     //
     $('#nav-body-ctrls').on('click', '#nav-ctrls-reload', function () {
         if ($(this).find('#nav-ready').length) {
-            $('.nav-views-view.active')[0].reload();
+            NAV.reload();
         } else {
-            $('.nav-views-view.active')[0].stop();
+            NAV.stop();
         }
     });
     //
@@ -243,7 +245,9 @@ function Navigation(options) {
         });
         webview.on('load-commit', function () {
             NAV._updateCtrls(webview[0]);
-            $('#nav-ctrls-url').prop('value', webview[0].getURL());
+            if (! $('#nav-ctrls-url').is(':focus') ) {
+                $('#nav-ctrls-url').prop('value', webview[0].getURL());
+            }            
         });
         webview[0].addEventListener('new-window', (res) => {
             NAV.newTab(res.url);
@@ -272,27 +276,150 @@ function Navigation(options) {
  * PROTOTYPES
  */
 //
-// create a new tab and view with an url
+// create a new tab and view with an url and optional id
 //
-Navigation.prototype.newTab = function (url) {
+Navigation.prototype.newTab = function (url, id) {
+    id = id || null;
     $('.nav-tabs-tab, .nav-views-view').removeClass('active');
-    if ($('#nav-tabs-add').length) {
-        $('#nav-tabs-add').before('<span class="nav-tabs-tab active" data-session="' + this.SESSION_ID + '"><i class="nav-tabs-favicon nav-icons">' + this.SVG_FAVICON + '</i><i class="nav-tabs-title">...</i><i class="nav-tabs-close nav-icons">' + this.SVG_CLEAR + '</i></span>');
-    } else {
-        $('#nav-body-tabs').append('<span class="nav-tabs-tab active" data-session="' + this.SESSION_ID + '"><i class="nav-tabs-favicon nav-icons">' + this.SVG_FAVICON + '</i><i class="nav-tabs-title">...</i><i class="nav-tabs-close nav-icons">' + this.SVG_CLEAR + '</i></span>');
+    if ( $('#' + id).length ) {
+        console.log('ERROR[electron-navigation][func "newTab();"]: The ID "' + id + '" already exists. Please use another one.');
+        return false;
     }
-    $('#nav-body-views').append('<webview class="nav-views-view active" data-session="' + this.SESSION_ID + '" src="' + this._purifyUrl(url) + '"></webview>');
-
+    if (!(/^[A-Za-z]+[\w\-\:\.]*$/.test(id))) {
+        console.log('ERROR[electron-navigation][func "newTab();"]: The ID "' + id + '" is not valid. Please use another one.');
+        return false;
+    }
+    // todo: make sure add has not been moved
+    if ($('#nav-tabs-add').length) {
+        if (this.TABS_CLOSEABLE) {
+            $('#nav-tabs-add').before('<span class="nav-tabs-tab active" data-session="' + this.SESSION_ID + '"><i class="nav-tabs-favicon nav-icons">' + this.SVG_FAVICON + '</i><i class="nav-tabs-title">...</i><i class="nav-tabs-close nav-icons">' + this.SVG_CLEAR + '</i></span>');
+        } else {
+            $('#nav-tabs-add').before('<span class="nav-tabs-tab active" data-session="' + this.SESSION_ID + '"><i class="nav-tabs-favicon nav-icons">' + this.SVG_FAVICON + '</i><i class="nav-tabs-title">...</i></span>');
+        }        
+    } else {
+        if (this.TABS_CLOSEABLE) {
+            $('#nav-body-tabs').append('<span class="nav-tabs-tab active" data-session="' + this.SESSION_ID + '"><i class="nav-tabs-favicon nav-icons">' + this.SVG_FAVICON + '</i><i class="nav-tabs-title">...</i><i class="nav-tabs-close nav-icons">' + this.SVG_CLEAR + '</i></span>');
+        } else {
+            $('#nav-body-tabs').append('<span class="nav-tabs-tab active" data-session="' + this.SESSION_ID + '"><i class="nav-tabs-favicon nav-icons">' + this.SVG_FAVICON + '</i><i class="nav-tabs-title">...</i></span>');
+        }        
+    }     
+    
+    if (id === null) {
+        $('#nav-body-views').append('<webview class="nav-views-view active" data-session="' + this.SESSION_ID + '" src="' + this._purifyUrl(url) + '"></webview>');
+    } else {
+        $('#nav-body-views').append('<webview id="' + id + '" class="nav-views-view active" data-session="' + this.SESSION_ID + '" src="' + this._purifyUrl(url) + '"></webview>');
+    }
+    
     this._addEvents(this.SESSION_ID);
     this.SESSION_ID++;
 } //:newTab()
 //
-// change current tab and view with url
+// change current or specified tab and view
 //
-Navigation.prototype.changeTab = function (url) {
-    $('.nav-views-view.active').attr('src', this._purifyUrl(url));
+Navigation.prototype.changeTab = function (url, id) {
+    id = id || null;
+    if (id === null) {
+        $('.nav-views-view.active').attr('src', this._purifyUrl(url));
+    } else {
+        if ( $('#' + id).length ) {
+            $('#' + id).attr('src', this._purifyUrl(url));
+        } else {
+            console.log('ERROR[electron-navigation][func "changeTab();"]: Cannot find the ID "' + id + '"');
+        }
+    }    
 } //:changeTab()
+//
+// close current or specified tab and view
+//
+Navigation.prototype.closeTab = function (id) {
+    id = id || null;
+
+    var session;
+    if (id === null) {
+        session = $('.nav-tabs-tab.active, .nav-views-view.active');
+    } else {
+        if ( $('#' + id).length ) {
+            var sessionID = $('#' + id).data('session');
+            session = $('.nav-tabs-tab, .nav-views-view').filter('[data-session="' + sessionID + '"]');
+        } else {
+            console.log('ERROR[electron-navigation][func "closeTab();"]: Cannot find the ID "' + id + '"');
+            return false;
+        }
+    }  
+              
+    if (session.next('.nav-tabs-tab').length) {
+        session.next().addClass('active');
+    } else {
+        session.prev().addClass('active');
+    }
+
+    $('#nav-ctrls-url').prop('value', '');
+    session.remove(); 
+} //:closeTab()
+//
+// go back on current or specified view
+//
+Navigation.prototype.back = function(id) {
+    id = id || null;
+    if (id === null) {
+        $('.nav-views-view.active')[0].goBack();
+    } else {
+        if ( $('#' + id).length ) {
+            $('#' + id)[0].goBack();
+        } else {
+            console.log('ERROR[electron-navigation][func "back();"]: Cannot find the ID "' + id + '"');
+        }
+    }
+}//:back()
+//
+// go forward on current or specified view
+//
+Navigation.prototype.forward = function(id) {
+    id = id || null;
+    if (id === null) {
+        $('.nav-views-view.active')[0].goForward();
+    } else {
+        if ( $('#' + id).length ) {
+            $('#' + id)[0].goForward();
+        } else {
+            console.log('ERROR[electron-navigation][func "forward();"]: Cannot find the ID "' + id + '"');
+        }
+    }
+}//:forward()
+//
+// reload current or specified view
+//
+Navigation.prototype.reload = function(id) {
+    id = id || null;
+    if (id === null) {
+        $('.nav-views-view.active')[0].reload();
+    } else {
+        if ( $('#' + id).length ) {
+            $('#' + id)[0].reload();
+        } else {
+            console.log('ERROR[electron-navigation][func "reload();"]: Cannot find the ID "' + id + '"');
+        }
+    }
+}//:reload()
+//
+// stop loading current or specified view
+//
+Navigation.prototype.stop = function(id) {
+    id = id || null;
+    if (id === null) {
+        $('.nav-views-view.active')[0].stop();
+    } else {
+        if ( $('#' + id).length ) {
+            $('#' + id)[0].stop();
+        } else {
+            console.log('ERROR[electron-navigation][func "stop();"]: Cannot find the ID "' + id + '"');
+        }
+    }
+}//:stop()
 /**
  * MODULE EXPORTS 
  */
+//
+// export the object
+//
 module.exports = Navigation;
