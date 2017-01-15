@@ -1,8 +1,7 @@
 # electron-navigation
-Adds a navigation interface to electron that allows you to browse the internet with tabs and webviews.
-
-![](previews/light.PNG)
-![](previews/dark.PNG)
+![version](https://img.shields.io/npm/v/electron-navigation.svg?style=flat-square)  ![downloads](https://img.shields.io/npm/dt/electron-navigation.svg?style=flat-square) [![paypal](https://img.shields.io/badge/paypal-donate-orange.svg?style=flat-square)](https://www.paypal.me/JeremyE) [![license](https://img.shields.io/npm/l/electron-navigation.svg?style=flat-square)](#meta)  
+Adds a navigation interface to electron that allows you to browse the internet with tabs and webviews.  
+![](previews/light.PNG)![](previews/dark.PNG)
 
 ### Install
 ---
@@ -80,14 +79,13 @@ npm install electron-navigation
     </html>
     ```
     
-3. Time to test if it works. Open up your command prompt (windows) and type these commands hitting *enter* after each one.
+3. Time to test if it works. Open up your command prompt (windows) and type these commands hitting *enter* after each one. Make sure you have Node.js installed which can be found [here](https://nodejs.org/en/download/).
     ```
     cd "C:\location\of\your\folder\demo"
     npm install electron-navigation --save
     npm test
     ```
 	![](previews/demo.PNG)
-    * Node.js must be installed for this to work. Download [here](https://nodejs.org/en/download/) if you don't have it.
 
 4. From here on out if you leave your command prompt window open to the demo directory, you can run your app by typing.
 	```
@@ -139,79 +137,6 @@ npm install electron-navigation
 
 > This should be all you need to get the basic functionality working. Confused? Check out the [demos](https://github.com/simply-coded/electron-navigation/tree/master/test) on github, also located in your project's node-modules folder.
 
-### Options
----
-You can control how and if some elements are displayed by passing an options object through the main electron-navigation object like so:  
-
-`index.html`
-```html
-<script>
-    var eNavigation = require('electron-navgation');
-
-    // the order doesn't matter
-    var nav = new eNavigation({
-        showAddTabButton: false,
-        showUrlBar: true,
-        showReloadButton: false
-    });
-</script>
-```
-```javascript
-// these are all the options, and their default values if omitted.
-options = {
-	showBackButton: true,
-    showForwardButton: true,
-    showReloadButton: true,
-    showUrlBar: true,
-    showAddTabButton: true,
-    closableTabs: true,
-    verticalTabs: false
-}
-```
-
-### Methods
----
->You can control the views and tabs using the object variable you created. 
-
-* newTab(url, id)
-	* url - *required*, specifies location of webview. Will auto add http protocol if domain is specified. Otherwise it will perform a google search.
-		* `http://github.com/`  = `http://github.com/`
-		* `youtube.com` = `http://www.youtube.com/`
-		* `hello there` = `https://www.google.com/search?q=hello+there`
-	* id - *optional*, creates an id to reference this tab later. Will console.log an error if the id is already taken or invalid.
-* changeTab(url, id) 
-	* url - *required*, specifies new location of webview. Has same auto features as newTab().
-	* id - *optional*, affects the webview with the id specified in newTab() created. If no id is given the active tab and view are affected. Will console.log an error if the id doesn't exist.
-* closeTab(id)
-	* id - *optional*, closes the tab and webview with the id specified in newTab(). If no id is given it will close the active tab and view.
-* back(id)
-	*  id - *optional*, goes back on the webview with the id specified in newTab(). If no id is given the active tab and view are affected.
-* forward(id)
-	*  id - *optional*, goes forward on the webview with the id specified in newTab(). If no id is given the active tab and view are affected.
-* reload(id)
-	*  id - *optional*, reloads the webview with the id specified in newTab(). If no id is given the active tab and view are affected.
-* stop(id)
-	*  id - *optional*, stops loading the webview with the id specified in newTab(). If no id is given the active tab and view are affected.
-
-Example : 
-
-`index.html`
-```html
-<script>
-	var eNavigation = require('electron-navigation');
-
-	var nav = new eNavigation({ showAddTabButton: false });
-	
-    nav.newTab('google.com', 'srch');
-    
-    setTimeout("nav.changeTab('cool wallpapers', 'srch')", 2000);
-    
-    setTimeout("nav.back('srch')", 5000);
-    
-</script>
-```
-NOTE: setTimeout is just used to show the effect.
-
 ### Themes
 ---
 You can apply themes by downloading the ones on [github](https://github.com/simply-coded/electron-navigation/tree/master/themes) and putting them in your `<head>` tag.  
@@ -221,7 +146,7 @@ You can apply themes by downloading the ones on [github](https://github.com/simp
 <head>
 	<!-- your code here -->
     
-	<link rel="stylesheet" type="text/css" href="relative/location/of/theme.css">
+	<link rel="stylesheet" href="relative/location/of/theme.css">
 </head>
 ```
 * Themes also located in `YourApp\node-modules\electron-navigation\themes\`.
@@ -244,6 +169,107 @@ The themes folder also has a template theming file that you can use to style the
 }
 ```
 
+### Options
+---
+You can control how and if some elements are displayed by passing an options object through the main electron-navigation object.  
+
+{ **showBackButton** : *boolean* }
+> Shows/Hides the back button in #nav-body-ctrls. Defaults to **true**.
+
+{ **showForwardButton** : *boolean* }
+> Shows/Hides the forward button in #nav-body-ctrls. Defaults to **true**.
+
+{ **showReloadButton** : *boolean* }
+> Shows/Hides the reload button in #nav-body-ctrls. Defaults to **true**.
+
+{ **showUrlBar** : *boolean* }
+> Shows/Hides the url input in #nav-body-ctrls. Defaults to **true**.
+
+{ **showAddTabButton** : *boolean* }
+> Shows/Hides the add button in #nav-body-tabs. Defaults to **true**.
+
+{ **closableTabs** : *boolean* }
+> Shows/Hides the close button on tabs in .nav-tabs-tab. Defaults to **true**.
+
+{ **verticalTabs** : *boolean* }
+> Changes the direction tabs are stacked in #nav-body-tabs. Defaults to **false**.
+
+```javascript
+// example of all options and their default values if omitted.
+options = {
+	showBackButton: true,
+    showForwardButton: true,
+    showReloadButton: true,
+    showUrlBar: true,
+    showAddTabButton: true,
+    closableTabs: true,
+    verticalTabs: false
+}
+```
+
+Example: `index.html`
+```html
+<script>
+    var eNavigation = require('electron-navgation');
+
+    // the order doesn't matter
+    var nav = new eNavigation({
+        showAddTabButton: false,
+        showUrlBar: true,
+        showReloadButton: false
+    });
+</script>
+```
+
+
+### Methods
+---
+You can control the views and tabs using the object variable you created. 
+
+**.newTab ( url , id )**  
+> **url** [*required*] - specifies the location of the webview. Will auto add an HTTP protocol if a domain is specified. Otherwise it will perform a google search.
+>	```javascript
+>	'http://github.com/'  = 'http://github.com/'
+>	'youtube.com' = 'http://www.youtube.com/'
+>	'hello there' = 'https://www.google.com/search?q=hello+there'
+>	```
+> **id** [*optional*] - creates an id to reference this tab later. Will console.log an error if the id is already taken or invalid.
+
+**.changeTab ( url , id )**
+> **url** [*required*] - specifies the new location of the webview. Has the same auto features as *newTab()*.  
+> 
+> **id** [*optional*] - changes the source of the webview with the id specified in *newTab()*. If no id is given the active tab and view are affected. Will console.log an error if the id doesn't exist.
+
+**.closeTab( id )**
+> **id** [*optional*] - closes the tab and webview with the id specified in *newTab()*. If no id is given the active tab and view are affected. Will console.log an error if the id doesn't exist.
+
+**.back( id )**
+> **id** [*optional*] - goes back on the webview with the id specified in *newTab()*. If no id is given the active tab and view are affected. Will console.log an error if the id doesn't exist.
+
+**.forward( id )**
+> **id** [*optional*] - goes forward on the webview with the id specified in *newTab()*. If no id is given the active tab and view are affected. Will console.log an error if the id doesn't exist.
+
+**.reload( id )**
+> **id** [*optional*] - reloads the webview with the id specified in *newTab()*. If no id is given the active tab and view are affected. Will console.log an error if the id doesn't exist.
+
+**.stop( id )**
+> **id** [*optional*] - stops loading the webview with the id specified in *newTab()*. If no id is given the active tab and view are affected. Will console.log an error if the id doesn't exist.
+
+Example: `index.html`
+```html
+<script>    
+    var eNavigation = require('electron-navigation');
+	var nav = new eNavigation({ showAddTabButton: false });
+	
+    nav.newTab('google.com', 'srch');
+    
+    //setTimeout() is just used to show the effect.
+    setTimeout("nav.changeTab('cool wallpapers', 'srch')", 2000);    
+    setTimeout("nav.back('srch')", 5000);
+    
+</script>
+```
+
 ### Requests | Issues | Clone
 ---
 > Looking to add functionality to this project, report a bug, or just have a question? Submit a [request](https://github.com/simply-coded/electron-navigation/issues), or clone the app and do it yourself.
@@ -254,6 +280,8 @@ git clone https://github.com/simply-coded/electron-navigation.git
 
 ### History
 ---
+* 1.1.1
+    * `FIX` - updated the **README.md** with extra info, rearrangements, and formatting.
 * 1.1.0
     * `FIX` - url bar will know not update while you are trying to type something new.
     * `ADD` - methods *back()*, *forward()*, *reload()*, and *stop()*.
