@@ -1,6 +1,8 @@
 # electron-navigation
 ![version](https://img.shields.io/npm/v/electron-navigation.svg?style=flat-square)  ![downloads](https://img.shields.io/npm/dt/electron-navigation.svg?style=flat-square) [![paypal](https://img.shields.io/badge/paypal-donate-orange.svg?style=flat-square)](https://www.paypal.me/JeremyE) [![license](https://img.shields.io/npm/l/electron-navigation.svg?style=flat-square)](#meta)  
-Adds a navigation interface to electron that allows you to browse the internet with tabs and webviews.  
+
+Adds a navigation interface to electron that allows you to browse the internet with tabs and webviews.
+
 ![](previews/light.PNG)![](previews/dark.PNG)
 
 ### Install
