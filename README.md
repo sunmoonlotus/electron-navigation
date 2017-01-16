@@ -228,14 +228,37 @@ Example: `index.html`
 ---
 You can control the views and tabs using the object variable you created. 
 
-**.newTab ( url , id )**  
+**.newTab ( url , { options } )**  
 > **url** [*required*] - specifies the location of the webview. Will auto add an HTTP protocol if a domain is specified. Otherwise it will perform a google search.
->	```javascript
->	'http://github.com/'  = 'http://github.com/'
->	'youtube.com' = 'http://www.youtube.com/'
->	'hello there' = 'https://www.google.com/search?q=hello+there'
->	```
-> **id** [*optional*] - creates an id to reference this tab later. Will console.log an error if the id is already taken or invalid.
+> ```javascript
+> "http://github.com/" // "http://github.com/"
+> "youtube.com" // "http://www.youtube.com/"
+> "hello there" // "https://www.google.com/search?q=hello+there"
+> ```
+> **{ options }** [*optional*] - allows you to control the tab appearance.
+>> { **id** : *string* } - creates an id for this tab's view so you can control it later. Logs an error if the id is already taken or invalid. Defaults to **null**.  
+>> 
+>> { **icon** : *string* } - changes the favicon. Defaults to **"clean"**.
+>> ```javascript
+>> icon: "default" // uses the regular favicon.
+>> icon: "clean" // uses a constant globe icon that is colored based on the default favicon.
+>> icon: "custom.png" // uses an icon you provide. Full or relative paths and other extensions are allowed.
+>> ```
+>> { **title** : *string* } - changes the title of the tab. Defaults to **"default"**.
+>> ```javascript
+>> title: "default" // uses the title specified by the <title> tag.
+>> title: "custom title" // uses whatever title you type.
+>> ```
+>> { **close** : *boolean* } - shows/hides the close button. Defaults to **true**.  
+> ```javascript
+> // example of all options and their default values if omitted.
+> var options = {
+>     id: null,           
+>     icon: "clean",      
+>     title: "default",   
+>     close: true         
+> };
+> ``` 
 
 **.changeTab ( url , id )**
 > **url** [*required*] - specifies the new location of the webview. Has the same auto features as *newTab()*.  
@@ -263,11 +286,27 @@ Example: `index.html`
     var eNavigation = require('electron-navigation');
 	var nav = new eNavigation({ showAddTabButton: false });
 	
-    nav.newTab('google.com', 'srch');
+    nav.newTab('google.com', { id: 'srch' } );
     
     //setTimeout() is just used to show the effect.
     setTimeout("nav.changeTab('cool wallpapers', 'srch')", 2000);    
     setTimeout("nav.back('srch')", 5000);
+    
+    // open a local file, and use a custom icon
+    nav.newTab('file:///' + __dirname + '/demo-file.html', { 
+    	icon: 'demo-icon.png',
+    	title: 'Local file'            
+    });
+
+    // create an unclosable tab that you can reference later with the id.
+    nav.newTab('youtube.com', {
+    	title: 'Watch Videos',
+    	icon: 'default',
+    	close: false,
+    	id: 'watchStuff'
+    });
+    
+    setTimeout('nav.changeTab( "https://www.youtube.com/watch?v=3_s8-OIkhOc" , "watchStuff" );', 5000);
     
 </script>
 ```

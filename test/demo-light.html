@@ -28,7 +28,13 @@
     <script>
         /* development */
         var eNavigation = require('../index.js');
-        var nav = new eNavigation();
+        var nav = new eNavigation( { showAddTabButton: false } );
+        
+        nav.newTab('google.com', { id: 'srch' } );
+    
+        //setTimeout() is just used to show the effect.
+        setTimeout("nav.changeTab('cool wallpapers', 'srch')", 2000);    
+        setTimeout("nav.back('srch')", 5000);
         
         // open a local file, and use a custom icon
         nav.newTab('file:///' + __dirname + '/demo-file.html', { 
@@ -43,8 +49,7 @@
             close: false,
             id: 'watchStuff'
         });
-                
-        // load a video in the youtube tab after 5 seconds
+        
         setTimeout('nav.changeTab( "https://www.youtube.com/watch?v=3_s8-OIkhOc" , "watchStuff" );', 5000);
 
         /* production
