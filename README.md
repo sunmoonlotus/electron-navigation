@@ -242,13 +242,13 @@ You can control the views and tabs using the object variable you created.
 > 
 > **id** [*optional*] - changes the source of the webview with the id specified in *newTab()*. If no id is given the active tab and view are affected. Will console.log an error if the id doesn't exist.
 
-**.closeTab( id )**
+**.closeTab ( id )**
 > **id** [*optional*] - closes the tab and webview with the id specified in *newTab()*. If no id is given the active tab and view are affected. Will console.log an error if the id doesn't exist.
 
-**.back( id )**
+**.back ( id )**
 > **id** [*optional*] - goes back on the webview with the id specified in *newTab()*. If no id is given the active tab and view are affected. Will console.log an error if the id doesn't exist.
 
-**.forward( id )**
+**.forward ( id )**
 > **id** [*optional*] - goes forward on the webview with the id specified in *newTab()*. If no id is given the active tab and view are affected. Will console.log an error if the id doesn't exist.
 
 **.reload ( id )**
