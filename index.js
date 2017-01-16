@@ -50,8 +50,7 @@ function Navigation(options) {
      * GLOBALS & ICONS
      */
     const NAV = this;
-    this.SESSION_ID = 1;
-    this.TABS_CLOSEABLE = options.closableTabs;
+    this.SESSION_ID = 1;    
 
     this.SVG_BACK = '<svg height="100%" viewBox="0 0 24 24"><path d="M0 0h24v24H0z" fill="none"/><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>';
     this.SVG_FORWARD = '<svg height="100%" viewBox="0 0 24 24"><path d="M0 0h24v24H0z" fill="none"/><path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/></svg>';
@@ -100,7 +99,7 @@ function Navigation(options) {
             .addClass('active');
 
         var session = $('.nav-views-view[data-session="' + sessionID + '"]')[0];
-        $('#nav-ctrls-url').prop('value', session.getURL());
+        $('#nav-ctrls-url').attr('value', session.getURL());
         NAV._updateCtrls(session);
         //
         // close tab and view
@@ -115,7 +114,7 @@ function Navigation(options) {
             } else {
                 session.prev().addClass('active');
             }
-            $('#nav-ctrls-url').prop('value', '');
+            $('#nav-ctrls-url').attr('value', '');
         }
         session.remove();
         return false;
@@ -124,7 +123,7 @@ function Navigation(options) {
     // add a tab, default to google.com
     //
     $('#nav-body-tabs').on('click', '#nav-tabs-add', function () {
-        NAV.newTab('http://www.google.com/');
+        NAV.newTab('http://www.google.com/', { close: options.closableTabs });
     });
     //
     // go back
@@ -165,12 +164,12 @@ function Navigation(options) {
     $('#nav-ctrls-url').keyup(function (e) {
         if (e.keyCode == 13) {
             if (e.shiftKey) {
-                NAV.newTab(this.value);
+                NAV.newTab(this.value, { close: options.closableTabs });
             } else {
                 if ($('.nav-tabs-tab').length) {
                     NAV.changeTab(this.value);
                 } else {
-                    NAV.newTab(this.value);
+                NAV.newTab(this.value, { close: options.closableTabs });
                 }
             }
         }
@@ -214,15 +213,21 @@ function Navigation(options) {
         });
         getHexColor.mostUsed(result => {
             currtab.find('.nav-tabs-favicon svg').attr('fill', result);
-        });
+        });        
     } //:_setTabColor()
     //
     // add event listeners to current webview
     //
-    this._addEvents = function (sessionID) {
+    this._addEvents = function (sessionID, favicon, title) {
         var currtab = $('.nav-tabs-tab[data-session="' + sessionID + '"]');
         var webview = $('.nav-views-view[data-session="' + sessionID + '"]');
-
+        
+        webview.on('page-title-updated', function () {            
+            if (title == 'default') {                
+                currtab.find('.nav-tabs-title').text(webview[0].getTitle());
+                currtab.find('.nav-tabs-title').attr('title', webview[0].getTitle());
+            }
+        });    
         webview.on('did-start-loading', function () {
             currtab.find('.nav-tabs-favicon').css('animation', 'nav-spin 2s linear infinite');
             $('#nav-ctrls-reload').html(NAV.SVG_CLEAR);
@@ -230,11 +235,7 @@ function Navigation(options) {
         webview.on('did-stop-loading', function () {
             currtab.find('.nav-tabs-favicon').css('animation', '');
             $('#nav-ctrls-reload').html(NAV.SVG_RELOAD);
-        });
-        webview.on('page-title-updated', function () {
-            currtab.find('.nav-tabs-title').text(webview[0].getTitle());
-            currtab.find('.nav-tabs-title').prop('title', webview[0].getTitle());
-        });
+        });           
         webview.on('enter-html-full-screen', function () {
             $('.nav-views-view.active').siblings().hide()
             $('.nav-views-view.active').parents().siblings().hide()
@@ -246,14 +247,18 @@ function Navigation(options) {
         webview.on('load-commit', function () {
             NAV._updateCtrls(webview[0]);
             if (! $('#nav-ctrls-url').is(':focus') ) {
-                $('#nav-ctrls-url').prop('value', webview[0].getURL());
+                $('#nav-ctrls-url').attr('value', webview[0].getURL());
             }            
         });
         webview[0].addEventListener('new-window', (res) => {
             NAV.newTab(res.url);
         });
         webview[0].addEventListener('page-favicon-updated', (res) => {
-            NAV._setTabColor(res.favicons[0], currtab);
+            if (favicon == 'clean') {
+                NAV._setTabColor(res.favicons[0], currtab);
+            } else if (favicon == 'default') {
+                currtab.find('.nav-tabs-favicon').attr('src', res.favicons[0]);
+            }            
         });
         webview[0].addEventListener('did-fail-load', function (res) {
             if (res.validatedURL == $('#nav-ctrls-url').val() && res.errorCode != -3) {
@@ -278,39 +283,66 @@ function Navigation(options) {
 //
 // create a new tab and view with an url and optional id
 //
-Navigation.prototype.newTab = function (url, id) {
-    id = id || null;
+Navigation.prototype.newTab = function (url, options) {
+    var defaults = {
+        id: null,           // null, 'custom'
+        icon: "clean",      // 'default', 'clean', 'c:\custom.png'
+        title: "default",   // 'default', 'custom'
+        close: true         // true, false        
+    };
+    if (options === 'undefined' || options === 'null' || options !== Object(options)) {
+        options = {};
+    }
+    for (var key in defaults) {
+        if (!(key in options)) {
+            options[key] = defaults[key];
+        }
+    }
+    // validate options.id
     $('.nav-tabs-tab, .nav-views-view').removeClass('active');
-    if ( $('#' + id).length ) {
-        console.log('ERROR[electron-navigation][func "newTab();"]: The ID "' + id + '" already exists. Please use another one.');
+    if ( $('#' + options.id).length ) {
+        console.log('ERROR[electron-navigation][func "newTab();"]: The ID "' + options.id + '" already exists. Please use another one.');
         return false;
     }
-    if (!(/^[A-Za-z]+[\w\-\:\.]*$/.test(id))) {
-        console.log('ERROR[electron-navigation][func "newTab();"]: The ID "' + id + '" is not valid. Please use another one.');
+    if (!(/^[A-Za-z]+[\w\-\:\.]*$/.test(options.id))) {
+        console.log('ERROR[electron-navigation][func "newTab();"]: The ID "' + options.id + '" is not valid. Please use another one.');
         return false;
     }
-    // todo: make sure add has not been moved
-    if ($('#nav-tabs-add').length) {
-        if (this.TABS_CLOSEABLE) {
-            $('#nav-tabs-add').before('<span class="nav-tabs-tab active" data-session="' + this.SESSION_ID + '"><i class="nav-tabs-favicon nav-icons">' + this.SVG_FAVICON + '</i><i class="nav-tabs-title">...</i><i class="nav-tabs-close nav-icons">' + this.SVG_CLEAR + '</i></span>');
-        } else {
-            $('#nav-tabs-add').before('<span class="nav-tabs-tab active" data-session="' + this.SESSION_ID + '"><i class="nav-tabs-favicon nav-icons">' + this.SVG_FAVICON + '</i><i class="nav-tabs-title">...</i></span>');
-        }        
+    // build tab    
+    var tab = '<span class="nav-tabs-tab active" data-session="' + this.SESSION_ID + '">';
+    // favicon
+    if (options.icon == 'clean') {
+        tab += '<i class="nav-tabs-favicon nav-icons">' + this.SVG_FAVICON + '</i>';
+    } else if (options.icon === 'default') {
+        tab += '<img class="nav-tabs-favicon nav-icons" src=""/>';
     } else {
-        if (this.TABS_CLOSEABLE) {
-            $('#nav-body-tabs').append('<span class="nav-tabs-tab active" data-session="' + this.SESSION_ID + '"><i class="nav-tabs-favicon nav-icons">' + this.SVG_FAVICON + '</i><i class="nav-tabs-title">...</i><i class="nav-tabs-close nav-icons">' + this.SVG_CLEAR + '</i></span>');
-        } else {
-            $('#nav-body-tabs').append('<span class="nav-tabs-tab active" data-session="' + this.SESSION_ID + '"><i class="nav-tabs-favicon nav-icons">' + this.SVG_FAVICON + '</i><i class="nav-tabs-title">...</i></span>');
-        }        
-    }     
-    
-    if (id === null) {
+        tab += '<img class="nav-tabs-favicon nav-icons" src="' + options.icon + '"/>';
+    }
+    // title
+    if (options.title == 'default') {
+        tab += '<i class="nav-tabs-title">...</i>';
+    } else {
+        tab += '<i class="nav-tabs-title">' + options.title + '</i>';        
+    }
+    // close
+    if (options.close) {
+        tab += '<i class="nav-tabs-close nav-icons">' + this.SVG_CLEAR + '</i>';
+    }
+    // finish tab
+    tab += '</span>';
+    // add tab to correct position
+    if ( $('#nav-body-tabs').has('#nav-tabs-add').length ) {
+        $('#nav-tabs-add').before( tab ); 
+    } else {
+        $('#nav-body-tabs').append( tab );        
+    }
+    // id
+    if (options.id == null) {
         $('#nav-body-views').append('<webview class="nav-views-view active" data-session="' + this.SESSION_ID + '" src="' + this._purifyUrl(url) + '"></webview>');
     } else {
-        $('#nav-body-views').append('<webview id="' + id + '" class="nav-views-view active" data-session="' + this.SESSION_ID + '" src="' + this._purifyUrl(url) + '"></webview>');
-    }
-    
-    this._addEvents(this.SESSION_ID);
+        $('#nav-body-views').append('<webview id="' + options.id + '" class="nav-views-view active" data-session="' + this.SESSION_ID + '" src="' + this._purifyUrl(url) + '"></webview>');
+    }    
+    this._addEvents(this.SESSION_ID, options.icon, options.title);
     this.SESSION_ID++;
 } //:newTab()
 //
@@ -318,7 +350,7 @@ Navigation.prototype.newTab = function (url, id) {
 //
 Navigation.prototype.changeTab = function (url, id) {
     id = id || null;
-    if (id === null) {
+    if (id == null) {
         $('.nav-views-view.active').attr('src', this._purifyUrl(url));
     } else {
         if ( $('#' + id).length ) {
@@ -335,7 +367,7 @@ Navigation.prototype.closeTab = function (id) {
     id = id || null;
 
     var session;
-    if (id === null) {
+    if (id == null) {
         session = $('.nav-tabs-tab.active, .nav-views-view.active');
     } else {
         if ( $('#' + id).length ) {
@@ -353,7 +385,7 @@ Navigation.prototype.closeTab = function (id) {
         session.prev().addClass('active');
     }
 
-    $('#nav-ctrls-url').prop('value', '');
+    $('#nav-ctrls-url').attr('value', '');
     session.remove(); 
 } //:closeTab()
 //
@@ -361,7 +393,7 @@ Navigation.prototype.closeTab = function (id) {
 //
 Navigation.prototype.back = function(id) {
     id = id || null;
-    if (id === null) {
+    if (id == null) {
         $('.nav-views-view.active')[0].goBack();
     } else {
         if ( $('#' + id).length ) {
@@ -376,7 +408,7 @@ Navigation.prototype.back = function(id) {
 //
 Navigation.prototype.forward = function(id) {
     id = id || null;
-    if (id === null) {
+    if (id == null) {
         $('.nav-views-view.active')[0].goForward();
     } else {
         if ( $('#' + id).length ) {
@@ -391,7 +423,7 @@ Navigation.prototype.forward = function(id) {
 //
 Navigation.prototype.reload = function(id) {
     id = id || null;
-    if (id === null) {
+    if (id == null) {
         $('.nav-views-view.active')[0].reload();
     } else {
         if ( $('#' + id).length ) {
@@ -406,7 +438,7 @@ Navigation.prototype.reload = function(id) {
 //
 Navigation.prototype.stop = function(id) {
     id = id || null;
-    if (id === null) {
+    if (id == null) {
         $('.nav-views-view.active')[0].stop();
     } else {
         if ( $('#' + id).length ) {

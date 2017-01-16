@@ -28,13 +28,24 @@
     <script>
         /* development */
         var eNavigation = require('../index.js');
-        var nav = new eNavigation({ showAddTabButton: false });
+        var nav = new eNavigation();
+        
+        // open a local file, and use a custom icon
+        nav.newTab('file:///' + __dirname + '/demo-file.html', { 
+            icon: 'demo-icon.png',
+            title: 'Local file'            
+        });
 
-        nav.newTab('google.com', 'srch');
-    
-        setTimeout("nav.changeTab('cool wallpapers', 'srch')", 2000);
-    
-        setTimeout("nav.back('srch')", 5000);
+        // create an unclosable tab that you can reference later with the id.
+        nav.newTab('youtube.com', {
+            title: 'Watch Videos',
+            icon: 'default',
+            close: false,
+            id: 'watchStuff'
+        });
+                
+        // load a video in the youtube tab after 5 seconds
+        setTimeout('nav.changeTab( "https://www.youtube.com/watch?v=3_s8-OIkhOc" , "watchStuff" );', 5000);
 
         /* production
             var eNavigation = require('electron-navigation');

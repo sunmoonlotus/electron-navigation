@@ -251,10 +251,10 @@ You can control the views and tabs using the object variable you created.
 **.forward( id )**
 > **id** [*optional*] - goes forward on the webview with the id specified in *newTab()*. If no id is given the active tab and view are affected. Will console.log an error if the id doesn't exist.
 
-**.reload( id )**
+**.reload ( id )**
 > **id** [*optional*] - reloads the webview with the id specified in *newTab()*. If no id is given the active tab and view are affected. Will console.log an error if the id doesn't exist.
 
-**.stop( id )**
+**.stop ( id )**
 > **id** [*optional*] - stops loading the webview with the id specified in *newTab()*. If no id is given the active tab and view are affected. Will console.log an error if the id doesn't exist.
 
 Example: `index.html`
@@ -282,6 +282,10 @@ git clone https://github.com/simply-coded/electron-navigation.git
 
 ### History
 ---
+* 1.2.0
+    * `ADD` - the *newTab()* function now has an options object as its second parameter to control the *icon*, *title*, *close button*, and add an *id*.
+    * `CHANGE` - the second parameter *id* in *newTab()* is now included in an options object.
+    * `FIX` - updated the **README.md** and **demo-light.html** files to show more examples.
 * 1.1.1
     * `FIX` - updated the **README.md** with extra info, rearrangements, and formatting.
 * 1.1.0
