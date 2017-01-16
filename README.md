@@ -230,11 +230,11 @@ You can control the views and tabs using the object variable you created.
 
 **.newTab ( url , { options } )**  
 > **url** [*required*] - specifies the location of the webview. Will auto add an HTTP protocol if a domain is specified. Otherwise it will perform a google search.
-> ```javascript
-> "http://github.com/" // "http://github.com/"
-> "youtube.com" // "http://www.youtube.com/"
-> "hello there" // "https://www.google.com/search?q=hello+there"
-> ```
+>> ```javascript
+>> "http://github.com/" // "http://github.com/"
+>> "youtube.com" // "http://www.youtube.com/"
+>> "hello there" // "https://www.google.com/search?q=hello+there"
+>> ```
 > **{ options }** [*optional*] - allows you to control the tab appearance.
 >> { **id** : *string* } - creates an id for this tab's view so you can control it later. Logs an error if the id is already taken or invalid. Defaults to **null**.  
 >> 
