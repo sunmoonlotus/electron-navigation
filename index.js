@@ -99,7 +99,7 @@ function Navigation(options) {
             .addClass('active');
 
         var session = $('.nav-views-view[data-session="' + sessionID + '"]')[0];
-        $('#nav-ctrls-url').attr('value', session.getURL());
+        $('#nav-ctrls-url').prop('value', session.getURL());
         NAV._updateCtrls(session);
         //
         // close tab and view
@@ -114,7 +114,7 @@ function Navigation(options) {
             } else {
                 session.prev().addClass('active');
             }
-            $('#nav-ctrls-url').attr('value', '');
+            $('#nav-ctrls-url').prop('value', '');
         }
         session.remove();
         return false;
