@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="demo-theme.css">
+</head>
+
+<body>
+
+    <main id="nav-body-views">
+        <header id="nav-body-tabs"><!-- tabs --></header>
+        <!-- views -->
+    </main>
+
+    <script>
+        /* development */
+        var eNavigation = require('../index.js');
+        var nav = new eNavigation( { showAddTabButton: false } );
+               
+        // open a local file, and use a custom icon
+        nav.newTab('file:///' + __dirname + '/demo-file.html', { 
+            icon: 'demo-icon.png',
+            title: 'Local file',
+            close: false            
+        });
+
+        // create an unclosable tab that you can reference later with the id.
+        nav.newTab('youtube.com', {
+            title: 'Watch Videos',
+            icon: 'default',
+            close: false,
+            id: 'watchStuff'
+        });
+        
+        setTimeout('nav.changeTab( "https://www.youtube.com/watch?v=3_s8-OIkhOc" , "watchStuff" );', 5000);
+
+        /* production
+            var eNavigation = require('electron-navigation');
+            var nav = new eNavigation();
+        */
+
+        document.getElementById("nav-body-tabs").onmouseenter = function() {mouseEnter(this)};
+        document.getElementById("nav-body-tabs").onmouseleave = function() {mouseLeave(this)};
+
+        function mouseEnter(e) {
+            e.style.left = "0";
+        }
+
+        function mouseLeave(e) {
+            e.style.left = "-375px";
+        }
+    </script>
+</body>
+
+</html>
