@@ -1,7 +1,7 @@
 # electron-navigation
 ![version](https://img.shields.io/npm/v/electron-navigation.svg?style=flat-square)  ![downloads](https://img.shields.io/npm/dt/electron-navigation.svg?style=flat-square) [![paypal](https://img.shields.io/badge/paypal-donate-orange.svg?style=flat-square)](https://www.paypal.me/JeremyE) [![license](https://img.shields.io/npm/l/electron-navigation.svg?style=flat-square)](#meta)  
 
-Adds a navigation interface to electron that allows you to browse the internet with tabs and webviews.
+Adds a navigation interface to electron that allows you to browse the internet or view local html files with tabs and webviews.
 
 ![](previews/light.PNG)![](previews/live.gif)
 
@@ -321,6 +321,9 @@ git clone https://github.com/simply-coded/electron-navigation.git
 
 ### History
 ---
+* 1.2.1
+    * `FIX` - changed the description to include local files.
+    * `FIX` - url input now changes on tab click.
 * 1.2.0
     * `ADD` - the *newTab()* function now has an options object as its second parameter to control the *icon*, *title*, *close button*, and add an *id*.
     * `CHANGE` - the second parameter *id* in *newTab()* is now included in an options object.
