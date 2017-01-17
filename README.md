@@ -3,7 +3,7 @@
 
 Adds a navigation interface to electron that allows you to browse the internet with tabs and webviews.
 
-![](previews/animated.gif)![](previews/light.PNG)
+![](previews/light.PNG)![](previews/animated.gif)
 
 ### Install
 ---
