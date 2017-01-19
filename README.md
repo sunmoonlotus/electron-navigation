@@ -112,7 +112,7 @@ npm install electron-navigation
     NOTE:   
     * The **IDs** are important. Make sure they are spelled correctly.    
     * If you don't want your users to control the pages you can get rid of the controls container. The ID for that is **nav-body-ctrls** .  
-    * The order or location of these divs doesn't matter, and they also don't have to be div elements one could be `<main id="nav-body-views">`.
+    * The order or location of these divs doesn't matter, and they also don't have to be div elements. For example: `<main id="nav-body-views"></main>`.
 	
 2. Now we need to apply the module by adding a script tag to the **~.html** file so that it can add the tabs and controls to the containers we just created above.	
 
@@ -313,7 +313,7 @@ Example: `index.html`
 
 ### Requests | Issues | Clone
 ---
-> Looking to add functionality to this project, report a bug, or just have a question? Submit a [request](https://github.com/simply-coded/electron-navigation/issues), or clone the app and do it yourself.
+> Looking to add functionality to this project, report a bug, or just have a question? Submit a [request](https://github.com/simply-coded/electron-navigation/issues), or clone the project and do it yourself.
 
 ```
 git clone https://github.com/simply-coded/electron-navigation.git
